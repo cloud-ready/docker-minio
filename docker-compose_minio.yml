@@ -5,12 +5,27 @@ services:
     extends:
       file: docker-compose-base.yml
       service: base-minio
+    networks:
+      local-network:
+        ipv4_address: ${IPV4_ADDRESS:-172.16.238.191}
+        #ipv6_address: ${IPV6_ADDRESS:-2001:3984:3989::191}
     ports:
       - "${EXTERNAL_MINIO_9000_PORT:-9000}:9000"
     restart: always
     volumes:
       - data:/data
       - dot_minio:/root/.minio
+
+networks:
+  local-network:
+    external: true
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+      #- subnet: 2001:3984:3989::/64
 
 volumes:
   data:

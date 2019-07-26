@@ -1,0 +1,11 @@
+
+version: '2.1'
+services:
+  base-minio:
+    command: ${MINIO_COMMAND:-server /data}
+    container_name: ${CONTAINER_HOST_NAME:-standalone.minio}
+    environment:
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY:-user}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY:-user_pass}
+    hostname: ${CONTAINER_HOST_NAME:-standalone.minio}
+    image: ${IMAGE_PREFIX:-minio/}${IMAGE_NAME:-minio}:${IMAGE_TAG:-RELEASE.2019-07-24T02-02-23Z}
