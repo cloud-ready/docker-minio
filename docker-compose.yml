@@ -1,0 +1,28 @@
+
+version: '2.1'
+services:
+  minio:
+    command: server /data
+    container_name: ${CONTAINER_HOST_NAME:-standalone.minio}
+    hostname: ${CONTAINER_HOST_NAME:-standalone.minio}
+    image: ${IMAGE_PREFIX:-minio/}${IMAGE_NAME:-minio}:${IMAGE_TAG:-RELEASE.2019-07-24T02-02-23Z}
+    ports:
+      - "${EXTERNAL_MINIO_9000_PORT:-9000}:9000"
+    restart: always
+    volumes:
+      - data:/data
+      - dot_minio:/root/.minio
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/data
+      o: bind
+  dot_minio:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}/data/dot_minio
+      o: bind
